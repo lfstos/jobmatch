@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from core.vaga.models import Vaga, Candidatura
 from django.db.models import Count
 from datetime import datetime
-from core.vaga.forms import VagaForm
+from core.vaga.forms import VagaForm, CandidaturaForm
 
 
 def lista_vagas(request):
@@ -70,3 +70,19 @@ def deletar_vaga(request, vaga_id):
         vaga.delete()
         return redirect('lista_vagas')
     return render(request, 'vagas/deletar_vaga.html', {'vaga': vaga})
+
+
+@login_required
+def candidatar_vaga(request, vaga_id):
+    vaga = Vaga.objects.get(id=vaga_id)
+    if request.method == 'POST':
+        form = CandidaturaForm(request.POST)
+        if form.is_valid():
+            candidatura = form.save(commit=False)
+            candidatura.candidato = request.user
+            candidatura.vaga = vaga
+            candidatura.save()
+            return redirect('detalhe_vaga', vaga_id=vaga.id)
+    else:
+        form = CandidaturaForm()
+    return render(request, 'vagas/candidatar_vaga.html', {'form': form, 'vaga': vaga})
