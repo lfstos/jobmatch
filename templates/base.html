@@ -20,6 +20,12 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'lista_vagas' %}">Home</a>
                     </li>
+                        &nbsp;&nbsp;
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <a class="nav-link active" aria-current="page" href="{% url 'relatorio' %}">Relatório</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
 	                   {% block navbar %} {% endblock %}
                     </li>
