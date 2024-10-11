@@ -8,16 +8,18 @@ class CandidatoRegistrationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Email'}),
-        label=''
-    )
+            attrs={'class': 'form-control', 'placeholder': 'Email'}), label=''
+        )
     password1 = forms.CharField(
         required=True,
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Senha'}), label='')
+            attrs={'class': 'form-control', 'placeholder': 'Senha'}), label=''
+        )
     password2 = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Senha'}), label='',)
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Confirmar Senha'}), label=''
+        )
 
     class Meta:
         model = CustomUser
