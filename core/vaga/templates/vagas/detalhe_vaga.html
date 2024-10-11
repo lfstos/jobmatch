@@ -3,11 +3,11 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1>{{ vaga.nome }}</h1>
+        <h1>Vaga: {{ vaga.nome }}</h1>
         <p>Faixa Salarial: {{ vaga.faixa_salarial }}</p>
         <p>Requisitos: {{ vaga.requisitos }}</p>
         <p>Escolaridade Mínima: {{ vaga.escolaridade_minima }}</p>
-
+        <hr>
         <h2>Candidatos</h2>
         <ul>
             {% for candidatura in vaga.candidatura_set.all %}
@@ -17,6 +17,7 @@
                     <p>Experiência: {{ candidatura.experiencia }}</p>
                     <p>Última Escolaridade: {{ candidatura.ultima_escolaridade }}</p>
                 </li>
+                <br>
             {% endfor %}
         </ul>
         <a href="{% url 'lista_vagas' %}">Voltar</a>
