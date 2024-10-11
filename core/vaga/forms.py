@@ -1,5 +1,5 @@
 from django import forms
-from core.vaga.models import Vaga
+from core.vaga.models import Vaga, Candidatura
 
 
 class VagaForm(forms.ModelForm):
@@ -21,3 +21,9 @@ class VagaForm(forms.ModelForm):
     class Meta:
         model = Vaga
         fields = ['nome', 'faixa_salarial', 'requisitos', 'escolaridade_minima']
+
+
+class CandidaturaForm(forms.ModelForm):
+    class Meta:
+        model = Candidatura
+        fields = ['pretensao_salarial', 'experiencia', 'ultima_escolaridade']
