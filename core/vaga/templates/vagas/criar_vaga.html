@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title%} Criar Vaga {% endblock %}
+
+{% if request.user.is_company %}
+    {% block navbar %}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'criar_vaga' %}">Criar Vaga</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'lista_vagas' %}">Listar Vagas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'relatorio' %}">Relatorio</a>
+        </li>
+    {% endblock %}
+{% endif %}
+
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Criar Vaga</h1>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Criar</button>
+        </form>
+        <a href="{% url 'lista_vagas' %}">Voltar</a>
+    </div>
+{% endblock %}
