@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Detalhes da Vaga{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>{{ vaga.nome }}</h1>
+        <p>Faixa Salarial: {{ vaga.faixa_salarial }}</p>
+        <p>Requisitos: {{ vaga.requisitos }}</p>
+        <p>Escolaridade Mínima: {{ vaga.escolaridade_minima }}</p>
+
+        <h2>Candidatos</h2>
+        <ul>
+            {% for candidatura in vaga.candidatura_set.all %}
+                <li>
+                    <p>Email: {{ candidatura.candidato.email }}</p>
+                    <p>Pretensão Salarial: {{ candidatura.pretensao_salarial }}</p>
+                    <p>Experiência: {{ candidatura.experiencia }}</p>
+                    <p>Última Escolaridade: {{ candidatura.ultima_escolaridade }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'lista_vagas' %}">Voltar</a>
+    </div>
+{% endblock %}
