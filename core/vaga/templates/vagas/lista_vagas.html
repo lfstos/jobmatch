@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Vagas{% endblock %}
+{% block navbar %}
+    {% if request.user.is_company and request.user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'criar_vaga' %}">Criar Vagas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'lista_vagas' %}">Listar Vagas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'relatorio' %}">Relatorio</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Lista de Vagas</h1>
+        <hr>
+{#        {% if request.user.is_company %}#}
+{#            <a href="{% url 'criar_vaga' %}">Criar Vaga</a>#}
+{#        {% endif %}#}
+        <ul>
+            {% for vaga in vagas %}
+                <li>
+                    <h2>{{ vaga.nome }}</h2>
+                    <p>Faixa Salarial: {{ vaga.faixa_salarial }}</p>
+                    <p>Requisitos: {{ vaga.requisitos }}</p>
+                    <p>Escolaridade Mínima: {{ vaga.escolaridade_minima }}</p>
+                    <p>Número de Candidatos: {{ vaga.candidatura_set.count }}</p>
+                    <a href="{% url 'detalhe_vaga' vaga.id %}">Ver Detalhes</a> &nbsp;
+                    {% if not request.user.is_company %}&nbsp;
+                        <a href="{% url 'candidatar_vaga' vaga.id %}">Candidatar-se</a>
+                    {% endif %}
+                    {% if request.user.is_company %}
+                        <a href="{% url 'editar_vaga' vaga.id %}">Editar</a>
+                        &nbsp;
+                        <a href="{% url 'deletar_vaga' vaga.id %}">Deletar</a>
+                    {% endif %}
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% block title %}<h1>Candidatar-se à Vaga: {{ vaga.nome }}</h1>{% endblock %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Candidatar-se</button>
+    </form>
+{% endblock %}

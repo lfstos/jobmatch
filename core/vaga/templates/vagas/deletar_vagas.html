@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deletar Vaga</title>
+</head>
+<body>
+    <h1>Deletar Vaga</h1>
+    <hr>
+    <p>Tem certeza que deseja deletar a vaga "{{ vaga.nome }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Deletar</button>
+    </form>
+    <a href="{% url 'lista_vagas' %}">Cancelar</a>
+</body>
+</html>
