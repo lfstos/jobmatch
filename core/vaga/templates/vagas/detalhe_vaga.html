@@ -18,7 +18,6 @@
                     <p>Última Escolaridade: {{ candidatura.get_ultima_escolaridade_display }}</p>
                     <p><strong>Pontos: {{ candidatura.pontos }}</strong></p>  <!-- Certifique-se de que a pontuação está sendo exibida aqui -->
                 </li>
-                <br>
             {% endfor %}
         </ul>
         <a href="{% url 'lista_vagas' %}">Voltar</a>
