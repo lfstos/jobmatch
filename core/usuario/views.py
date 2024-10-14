@@ -11,7 +11,7 @@ def register_candidato(request):
             user = form.save(commit=False)
             user.is_company = False  # Define o usuário como candidato
             user.save()
-            return redirect('login')  # Redireciona para a página de login após o cadastro
+            return redirect('login')
     else:
         form = CandidatoRegistrationForm()
     return render(request, 'users/register_candidato.html', {'form': form})

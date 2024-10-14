@@ -2,16 +2,15 @@ name: Django Backend CI
 
 on:
   pull_request:
-    push:
-      branches: main
+  push:
+    branches: main
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     defaults:
       run:
-        working-directory: core
-
+        working-directory: core  # Subdiretório core é o diretório de trabalho padrão
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,8 +27,13 @@ jobs:
           python -m pip install poetry
           poetry install --with dev --sync
 
+      - name: Apply migrations
+        run: |
+          poetry run python ../manage.py makemigrations usuario  # Caminho atualizado
+          poetry run python ../manage.py migrate  # Caminho atualizado
+
       - name: Run Linter Flake8
         run: poetry run flake8 .
-      
-      # - name: Run backend Tests
-      #   run: poetry run pytest --cache-clear
+
+      - name: Run backend Tests
+        run: poetry run pytest --cache-clear
