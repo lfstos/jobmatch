@@ -32,7 +32,7 @@
                     <p>Escolaridade Mínima: {{ vaga.escolaridade_minima }}</p>
                     <p>Número de Candidatos: {{ vaga.candidatura_set.count }}</p>
                     <a href="{% url 'detalhe_vaga' vaga.id %}">Ver Detalhes</a> &nbsp;
-                    {% if not request.user.is_company %}&nbsp;
+                    {% if not request.user.is_company and request.user.is_authenticated %}&nbsp;
                         <a href="{% url 'candidatar_vaga' vaga.id %}">Candidatar-se</a>
                     {% endif %}
                     {% if request.user.is_company %}

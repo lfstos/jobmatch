@@ -32,7 +32,7 @@ class Vaga(models.Model):
 
 class Candidatura(models.Model):
     candidato = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'is_company': False})
-    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
+    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, related_name='candidaturas')
     data_candidatura = models.DateTimeField(auto_now_add=True)
     pretensao_salarial = models.CharField(max_length=16, choices=Vaga.SALARIO_OPCOES)
     experiencia = models.TextField()
