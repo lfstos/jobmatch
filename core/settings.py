@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'usuario.CustomUser'
 
-LOGIN_REDIRECT_URL = '/vagas/'
+LOGIN_REDIRECT_URL = '/vagas/vagas/'
 
 LOGOUT_REDIRECT_URL = ''
 

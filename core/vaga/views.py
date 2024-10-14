@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from core.vaga.models import Vaga, Candidatura
@@ -32,6 +33,9 @@ def relatorio(request):
     })
 
 
+logger = logging.getLogger(__name__)
+
+
 @login_required(login_url='login')
 def criar_vaga(request):
     if request.method == 'POST':
@@ -40,18 +44,52 @@ def criar_vaga(request):
             vaga = form.save(commit=False)
             vaga.empresa = request.user
             vaga.save()
+            logger.info("Vaga criada com sucesso. Redirecionando para 'lista_vagas'.")
             return redirect('lista_vagas')
+        else:
+            logger.warning("Formulário inválido. Erros: %s", form.errors)
     else:
         form = VagaForm()
     return render(request, 'vagas/criar_vaga.html', {'form': form})
 
+# def detalhe_vaga(request, vaga_id):
+#     vaga = get_object_or_404(Vaga, id=vaga_id)
+#     return render(request, 'vagas/detalhe_vaga.html', {'vaga': vaga})
 
+
+# @login_required(login_url='login')
+@login_required(login_url='login')
 def detalhe_vaga(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id)
-    return render(request, 'vagas/detalhe_vaga.html', {'vaga': vaga})
+    candidaturas = vaga.candidaturas.all()  # Usando o related_name 'candidaturas'
+
+    # Pontuando candidatos
+    def pontuar_candidato(candidatura):
+        pontos = 0
+
+        # Pontuação por faixa salarial
+        if candidatura.pretensao_salarial == vaga.faixa_salarial:
+            pontos += 1
+
+        # Lista de escolaridades em ordem crescente de importância
+        ordem_escolaridade = [
+            'FUNDAMENTAL', 'MEDIO', 'TECNOLOGO', 'SUPERIOR', 'POS', 'DOUTORADO'
+        ]
+
+        # Pontuação por escolaridade
+        if ordem_escolaridade.index(candidatura.ultima_escolaridade) >= ordem_escolaridade.index(vaga.escolaridade_minima):
+            pontos += 1
+
+        return pontos
+
+    # Calcula os pontos para cada candidatura
+    for candidatura in candidaturas:
+        candidatura.pontos = pontuar_candidato(candidatura)
+        logger.info(f'Candidatura: {candidatura}, Pontos: {candidatura.pontos}')
+
+    return render(request, 'vagas/detalhe_vaga.html', {'vaga': vaga, 'candidaturas': candidaturas})
 
 
-@login_required(login_url='login')
 def editar_vaga(request, vaga_id):
     vaga = get_object_or_404(Vaga, id=vaga_id)
     if request.method == 'POST':
