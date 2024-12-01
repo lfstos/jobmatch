@@ -16,7 +16,10 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError("The given email must be set")
-        email = self.normalize_email(email)
+        email = self.normalize_email(email).lower()
+        password = password.strip()
+        if password is None or password == "":
+            raise ValueError("The given password must be set")
         # Lookup the real model class from the global app registry so this
         # manager method can be used in migrations. This is fine because
         # managers are by definition working on the real model.
