@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'usuarios',
     'empresa',
+    'candidato'
 ]
 
 MIDDLEWARE = [
