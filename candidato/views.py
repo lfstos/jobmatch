@@ -1,3 +1,5 @@
 from django.shortcuts import render #noqa
 
-# Create your views here.
+def cadastrar_vaga(request):
+    if request.method == 'POST':
+        ...
