@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     'usuarios',
     'empresa',
-    'candidato',
     'vagas',
 ]
 
