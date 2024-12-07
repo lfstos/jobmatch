@@ -116,8 +116,81 @@ def test_cria_uma_vaga():
     assert vaga.empresa.email == empresa.email
 
 
+# @pytest.mark.django_db
+# def test_candidata_uma_vaga():
+#     client = Client()
+
+    # user = User.objects.create_user(email='candidato@candidato.com', password='candidato')
+
+
+
 @pytest.mark.django_db
-def test_candidata_uma_vaga():
+def test_lista_com_uma_vaga():
+    
     client = Client()
 
-    user = User.objects.create_user(email='candidato@candidato.com', password='candidato')
+    # Criação de uma empresa para criar uma vaga
+    empresa = Empresa.objects.create(email='empresa@empresa.com')
+    
+    # Criação da vaga com a instância Empresa
+    Vaga.objects.create(
+        nome_vaga='Desenvolvedor Django',
+        faixa_salarial='3k+',
+        escolaridade='Doutorado',
+        requisitos='Saber desenvolvimento web',
+        empresa=empresa
+    )
+
+    # Fazendo uma requisição GET à view lista_vagas
+    response = client.get(reverse('lista_vagas'))
+    
+    # Verificando se o status da resposta é 200 (OK)
+    assert response.status_code == 200
+
+    # Verificando se a vaga criada está no contexto da resposta
+    assert 'vagas' in response.context
+    assert response.context['vagas'].count() == 1
+    assert response.context['vagas'].first().nome_vaga == 'Desenvolvedor Django'
+
+@pytest.mark.django_db
+def test_lista_com_cinco_vagas():
+    
+    client = Client()
+
+    # Criação de uma empresa para criar cinco vagas
+    empresa = Empresa.objects.create(email='empresa@empresa.com')
+
+    # Criação das vagas com a instância da Empresa
+    Vaga.objects.create(
+        nome_vaga = 'Desenvolvedor Django', empresa=empresa
+    )
+    Vaga.objects.create(
+        nome_vaga = 'Desenvolvedor Python', empresa=empresa
+    )
+    Vaga.objects.create(
+        nome_vaga = 'Analista de Dados', empresa=empresa
+    )
+    Vaga.objects.create(
+        nome_vaga = 'Gerente de Projetos', empresa=empresa
+    )
+    Vaga.objects.create(
+        nome_vaga = 'Engenheiro de Software', empresa=empresa
+    )
+
+    # Fazendo a reauisição GET à view lista_vagas
+    response = client.get(reverse('lista_vagas'))
+
+    # Verificando se o status da resposta é 200 (OK)
+    assert response.status_code == 200
+    
+    # Verficando se todas as 5 vagas criadas estão no contexto da resposta
+    assert response.context['vagas'].count() == 5
+
+    # Verificação adicioan para garantir que os nomes das vagas estão corretas
+    nomes_vagas = [vaga.nome_vaga for vaga in response.context['vagas']]
+    assert 'Desenvolvedor Django' in nomes_vagas
+    assert 'Desenvolvedor Python' in nomes_vagas
+    assert 'Analista de Dados' in nomes_vagas
+    assert 'Gerente de Projetos' in nomes_vagas
+    assert 'Engenheiro de Software' in nomes_vagas
+
