@@ -24,3 +24,8 @@ def cadastrar_vagas(request):
         return render(request, 'vagas/cadastrar_vagas.html', {'form': form})
 
 
+def lista_vagas(request):
+    # TODO: Escrever teste para essa view
+    vagas = Vaga.objects.all()
+    return render(request, 'vagas/lista_vagas.html', {'vagas': vagas})
+    

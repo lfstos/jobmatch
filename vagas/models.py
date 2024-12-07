@@ -18,7 +18,6 @@ class Vaga(models.Model):
 
 class Candidato(models.Model):
     email = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    # nome = models.CharField(max_length=100)
     faixa_salarial = models.CharField(max_length=5, choices=get_faixa_salarial_choices)
     escolaridade = models.CharField(max_length=18, choices=get_escolaridade_choices)
     experiencia = models.TextField()
