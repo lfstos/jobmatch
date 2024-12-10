@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.test import Client
 from django.urls import reverse
 
-from empresa.models import Empresa
 from usuarios.models import User
 from vagas.models import Vaga, Candidato
 
@@ -13,9 +12,9 @@ User = get_user_model()
 @pytest.mark.django_db
 def test_cadastra_um_candidato_para_uma_vaga():
     user = User.objects.create_user(
-        email='candidato@candidato.com', password='candidato'
+        email='candidato@candidato.com', password='candidato', is_company=False
     )
-    empresa = Empresa.objects.create(email='email@email.com')
+    empresa = User.objects.create_user(email='empresa@empresa.com', password='empresa', is_company=True)
     vaga = Vaga.objects.create(nome_vaga='Desenvolvedor Python/Django', empresa=empresa)
 
     candidato = Candidato.objects.create(
@@ -36,9 +35,9 @@ def test_cadastra_um_candidato_para_uma_vaga():
 @pytest.mark.django_db
 def test_cadastra_um_candidato_para_duas_vagas():
     user = User.objects.create_user(
-        email='candidato@candidato.com', password='candidato'
+        email='candidato@candidato.com', password='candidato', is_company=False
     )
-    empresa = Empresa.objects.create(email='empresa@empresa.com')
+    empresa = User.objects.create(email='empresa@empresa.com', password='empresa', is_company=True)
     vaga1 = Vaga.objects.create(
         nome_vaga='DBA',
         empresa=empresa,
@@ -76,11 +75,12 @@ def test_cadastra_um_candidato_para_duas_vagas():
 
 @pytest.mark.django_db
 def test_cria_uma_vaga():
+    
     client = Client()
 
     # Criação de uma empresa e um usuário para associar à vaga
-    user = User.objects.create_user(email='empresa@empresa.com', password='testpassword')
-    empresa = Empresa(email='empresa@empresa.com')
+    # user = User.objects.create_user(email='empresa@empresa.com', password='testpassword')
+    empresa = User.objects.create_user(email='empresa@empresa.com', password='testpassword', is_company=True)
     empresa.save()
 
     # Autentica o usuário
@@ -120,8 +120,7 @@ def test_cria_uma_vaga():
 # def test_candidata_uma_vaga():
 #     client = Client()
 
-    # user = User.objects.create_user(email='candidato@candidato.com', password='candidato')
-
+#     user = User.objects.create_user(email='candidato@candidato.com', password='testpassword')
 
 
 @pytest.mark.django_db
@@ -130,7 +129,7 @@ def test_lista_com_uma_vaga():
     client = Client()
 
     # Criação de uma empresa para criar uma vaga
-    empresa = Empresa.objects.create(email='empresa@empresa.com')
+    empresa = User.objects.create(email='empresa@empresa.com', password='testpassword', is_company=True)
     
     # Criação da vaga com a instância Empresa
     Vaga.objects.create(
@@ -158,24 +157,14 @@ def test_lista_com_cinco_vagas():
     client = Client()
 
     # Criação de uma empresa para criar cinco vagas
-    empresa = Empresa.objects.create(email='empresa@empresa.com')
+    empresa = User.objects.create(email='empresa@empresa.com', password='testpassword', is_company=True)
 
     # Criação das vagas com a instância da Empresa
-    Vaga.objects.create(
-        nome_vaga = 'Desenvolvedor Django', empresa=empresa
-    )
-    Vaga.objects.create(
-        nome_vaga = 'Desenvolvedor Python', empresa=empresa
-    )
-    Vaga.objects.create(
-        nome_vaga = 'Analista de Dados', empresa=empresa
-    )
-    Vaga.objects.create(
-        nome_vaga = 'Gerente de Projetos', empresa=empresa
-    )
-    Vaga.objects.create(
-        nome_vaga = 'Engenheiro de Software', empresa=empresa
-    )
+    Vaga.objects.create(nome_vaga = 'Desenvolvedor Django', empresa=empresa)
+    Vaga.objects.create(nome_vaga = 'Desenvolvedor Python', empresa=empresa)
+    Vaga.objects.create(nome_vaga = 'Analista de Dados', empresa=empresa)
+    Vaga.objects.create(nome_vaga = 'Gerente de Projetos', empresa=empresa)
+    Vaga.objects.create(nome_vaga = 'Engenheiro de Software', empresa=empresa)
 
     # Fazendo a reauisição GET à view lista_vagas
     response = client.get(reverse('lista_vagas'))
@@ -194,3 +183,45 @@ def test_lista_com_cinco_vagas():
     assert 'Gerente de Projetos' in nomes_vagas
     assert 'Engenheiro de Software' in nomes_vagas
 
+
+@pytest.mark.django_db
+def test_candidatar_vaga():
+
+    client = Client()
+
+    # Criando um Usuário que irá representar o candidato
+    usuario = User.objects.create_user(email='usuario@usuario.com', password='usuario', is_company=False)
+
+    # Criando uma instância de Empresa
+    empresa = User.objects.create_user(email='empresa@empresa.com', password='empresa', is_company=True)
+    empresa.save()
+
+    # Criando uma instância de Vaga
+    vaga = Vaga(
+        nome_vaga = 'Desenvolvedor Django',
+        faixa_salarial = '1k-2k',
+        escolaridade = 'Ensino Medio',
+        requisitos = 'Proeficiente em API Rest',
+        empresa = empresa
+    )
+    vaga.save()
+
+    # Criação da Candidatura
+    dados_formulario = {
+        'email': usuario.id,
+        'faixa_salarial': '1k-2k',
+        'escolaridade': 'Tecnologo',
+        'experiencia': 'Sou desenvolvedor web com especialidade Django',
+        'vaga': vaga.id
+    }
+
+    url = reverse('candidatar_vaga')
+    response = client.post(url, dados_formulario)
+    assert response.status_code == 200
+
+    # email = User.objects.get(email='usuario@usuario.com')
+    candidato = Candidato.objects.get(email=usuario)
+    assert candidato.faixa_salarial == '1k-2k'
+    assert candidato.escolaridade == 'Tecnologo'
+    assert candidato.experiencia == 'Sou desenvolvedor web com especialidade Django'
+    assert candidato.vagas.filter(id=vaga.id).exists()
