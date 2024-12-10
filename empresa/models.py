@@ -1,8 +1,1 @@
-from django.db import models
-
-
-class Empresa(models.Model):
-    email = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.email
+from django.db import models #noqa
