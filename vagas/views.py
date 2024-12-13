@@ -7,6 +7,7 @@ from usuarios.models import User
 
 def cadastrar_vagas(request):
     if request.method == 'POST':
+<<<<<<< HEAD
         if request.POST.get('is_company') == 'True':
             form = VagaForm(request.POST)
             if form.is_valid():
@@ -21,6 +22,19 @@ def cadastrar_vagas(request):
                 return HttpResponse('Vaga cadastrada com sucesso')
             else:
                 return HttpResponse(f'Formulário inválido: {form.errors.as_json()}', status=400)
+=======
+        form = VagaForm(request.POST)
+        if form.is_valid():
+            vaga = Vaga.objects.create(
+                nome_vaga=form.cleaned_data['nome_vaga'],
+                faixa_salarial=form.cleaned_data['faixa_salarial'],
+                escolaridade=form.cleaned_data['escolaridade'],
+                requisitos=form.cleaned_data['requisitos'],
+                empresa=form.cleaned_data['empresa'],
+            )
+            vaga.save()
+            return HttpResponse('Vaga cadastrada com sucesso')
+>>>>>>> origin/main
         else:
             raise Exception('Apenas Empresa pode cadastrar vagas!')
     elif request.method == 'GET':
@@ -67,6 +81,10 @@ def editar_vaga(request):
                 vaga.requisitos=form.cleaned_data['requisitos']
                 vaga.empresa=form.cleaned_data['empresa']
                 vaga.save()
+<<<<<<< HEAD
+=======
+                print('vaga alterada com sucesso')
+>>>>>>> origin/main
                 return render(request, 'vagas/lista_vagas.html')
         else:
             return HttpResponse('não é empresa')
@@ -74,6 +92,7 @@ def editar_vaga(request):
 
 def excluir_vaga(request):
     if request.method == 'POST':
+<<<<<<< HEAD
         if request.POST.get('is_company') == 'True':
             id = request.POST.get('vaga')
             vaga = Vaga.objects.filter(id=id)
@@ -83,3 +102,12 @@ def excluir_vaga(request):
             raise Exception('Apenas empresa pode excluir vaga!')
         
     
+=======
+        if request.POST.get('is_company'):
+            # print(request.POST.get('vaga'))
+            id = request.POST.get('vaga')
+            vaga = Vaga.objects.get(id=id)
+            print(vaga)
+            vaga.delete()
+    return render(request, 'vagas/lista_vagas.html')
+>>>>>>> origin/main
