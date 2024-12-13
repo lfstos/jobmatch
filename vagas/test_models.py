@@ -219,10 +219,6 @@ def test_candidatar_vaga():
 
     # candidato = Candidato.objects.get(email=usuario.email)
     candidato = Candidato.objects.get(email=usuario)
-<<<<<<< HEAD
-=======
-    print(candidato)
->>>>>>> origin/main
     # assert vaga.faixa_salarial == '1k-2k'
     # assert vaga.escolaridade == 'Tecnologo'
     # assert vaga.experiencia == 'Sou desenvolvedor web com especialidade Django'
@@ -302,7 +298,6 @@ def test_excluir_vaga_empresa():
 
     vaga = Vaga.objects.all()
 
-<<<<<<< HEAD
     assert vaga.count() == 0
 
 
@@ -359,7 +354,3 @@ def test_criar_vaga_candidato_gera_excessao():
 
     with pytest.raises(Exception, match='Apenas Empresa pode cadastrar vagas!'):
         response = client.post(url, payload)
-    
-=======
-    assert vaga.count() == 0
->>>>>>> origin/main
