@@ -1,6 +1,7 @@
 import pytest
+from django.test import Client
 from .models import User
-
+from django.urls import reverse
 
 @pytest.mark.django_db
 def test_cria_candidato():
@@ -35,3 +36,10 @@ def test_cria_usuario_sem_email():
     with pytest.raises(ValueError, match="The given email must be set"):
         usuario = User.objects.create_user(email="", password="usuario", is_company=False)
         assert usuario.email == "usuario@usuario.com"
+
+
+def test_home():
+    client = Client()
+
+    url = reverse('home')
+    client.get(url)
