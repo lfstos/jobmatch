@@ -1,7 +1,6 @@
 import pytest
 from django.test import Client
 from .models import User
-from django.urls import reverse
 
 @pytest.mark.django_db
 def test_cria_candidato():
@@ -40,6 +39,8 @@ def test_cria_usuario_sem_email():
 
 def test_home():
     client = Client()
-
-    url = reverse('home')
-    client.get(url)
+    response = client.get('/')
+    assert response.status_code == 200
+    # assert 'home' in response.home.html
+    
+        
