@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}Cadastro{% endblock title %}
+
 {% block content %}
+
     <div class="container">
         <div class="row">
           <div class="col"></div>
@@ -9,14 +12,18 @@
                 {% csrf_token %}
                 {{ form.email }}
                 <br>
-                {{ form.password }}
+                {{ form.password1 }}
                 <br>
-                <input type='submit' value='Entrar' class="btn btn-outline-primary">
+                {{ form.password2 }}
+                <br>
+                <input type='submit' value='Cadastrar' class="btn btn-outline-primary">
             </form>
             <br>
-            Não tem conta? <a href="{% url "cadastro" %}">Cadastre-se</a>
+            Já possui conta? <a href="{% url "home" %}">Login</a>
           </div>
           <div class="col"></div>
         </div>
       </div>
+
+
 {% endblock content %}
