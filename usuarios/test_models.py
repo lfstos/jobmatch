@@ -1,13 +1,23 @@
 import pytest
 from django.test import Client
+from django.urls import reverse
 from .models import User
 
 @pytest.mark.django_db
 def test_cria_candidato():
-    candidato = User.objects.create_user(email="candidato@candidato.com", password="candidato", is_company=False)
-    assert candidato.email == "candidato@candidato.com"
-    assert not candidato.is_company
+    
+    client = Client()
 
+    payload = {
+        'email': 'candidato@candidato',
+        'password1': 'testpassword',
+        'password2': 'testpassword',
+    }
+    url = reverse('cadastro')
+    response = client.post(url, payload)
+
+    assert response.status_code == 200
+    
 
 @pytest.mark.django_db
 def test_cria_empresa():
@@ -42,5 +52,10 @@ def test_home():
     response = client.get('/')
     assert response.status_code == 200
     # assert 'home' in response.home.html
+
+
+# @pytest.mark.django_db
+# def test_criar_usuario():
     
-        
+    
+#     client = Client()

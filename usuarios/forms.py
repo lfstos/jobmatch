@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from usuarios.models import User
 
+
 class UsuarioForm(forms.Form):
     email = forms.EmailField(
         required=True,
@@ -11,6 +12,7 @@ class UsuarioForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}), label=''
 
     )
+    
 
 
 class CadastroForm(UserCreationForm):
@@ -26,10 +28,15 @@ class CadastroForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Senha'}), label=''
 
     )
+    is_company = forms.ChoiceField(
+        choices=[('False', 'Não'), ('True', 'Sim')],
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label=''
+    )
 
     class Meta:
         model = User
-        fields=['email', 'password1', 'password2']
+        fields=['email', 'password1', 'password2', 'is_company']
 
     def save(self, commit=True):
         user = super().save(commit=False)

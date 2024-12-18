@@ -5,18 +5,31 @@
 {% block content %}
 
     <div class="container">
+      <h1>Cadastre-se</h1>
+      <hr>
         <div class="row">
           <div class="col"></div>
           <div class="col">
-            <form action='.' method='post'>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <form action='{% url "cadastro" %}' method='post'>
                 {% csrf_token %}
+                <br>
                 {{ form.email }}
                 <br>
                 {{ form.password1 }}
                 <br>
                 {{ form.password2 }}
                 <br>
-                <input type='submit' value='Cadastrar' class="btn btn-outline-primary">
+                Empresa? 
+                {{ form.is_company }}
+                <br><br>
+                <input type='submit' value='Cadastrar' class="btn btn-outline-primary">                
             </form>
             <br>
             Já possui conta? <a href="{% url "home" %}">Login</a>
