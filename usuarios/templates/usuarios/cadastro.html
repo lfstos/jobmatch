@@ -1,42 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Cadastro{% endblock title %}
+{% block h1 %}Cadastre-se{% endblock h1 %}
 
 {% block content %}
-
-    <div class="container">
-      <h1>Cadastre-se</h1>
-      <hr>
-        <div class="row">
-          <div class="col"></div>
-          <div class="col">
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-danger" role="alert">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-            <form action='{% url "cadastro" %}' method='post'>
-                {% csrf_token %}
-                <br>
-                {{ form.email }}
-                <br>
-                {{ form.password1 }}
-                <br>
-                {{ form.password2 }}
-                <br>
-                Empresa? 
-                {{ form.is_company }}
-                <br><br>
-                <input type='submit' value='Cadastrar' class="btn btn-outline-primary">                
-            </form>
-            <br>
-            Já possui conta? <a href="{% url "home" %}">Login</a>
-          </div>
-          <div class="col"></div>
-        </div>
-      </div>
-
-
+  <form action='{% url "cadastro" %}' method='post'>
+    {% csrf_token %}
+    <br>
+    {{ form.email }}
+    <br>
+    {{ form.password1 }}
+    <br>
+    {{ form.password2 }}
+    <br>
+    Empresa? 
+    {{ form.is_company }}
+    <br><br>
+    <input type='submit' value='Cadastre-se' class="btn btn-outline-primary">
+  </form>
+  <br>
+  Já possui conta? <a href="{% url "home" %}">Login</a>
 {% endblock content %}
