@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Vagas{% endblock title %}
+
+
+{% block h1 %}Vagas{% endblock h1 %}
+
+{% block content %}
+    {% if quantidade_vagas == 0 %}
+        <h2>Nenhuma vaga disponível</h2>
+    {% endif %}
+    {{ vaga.nome_vaga}}
+    {{ vaga.faixa_salarial }}
+    {{ vaga.escolaridade }}
+    {{ vaga.requisitos }}
+    {{ vaga.empresa }}
+{% endblock content %}

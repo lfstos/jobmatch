@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block h1 %}Candidatar-se a vaga{% endblock h1 %}
+
+{% block container %}
+<form action='{% url "candidatar_vaga" %}' method='post'>
+    {% csrf_token %}
+    <input type='hidden' value='{{form.email}}' name='email'>
+    <br>
+    {{ form.faixa_salarial }}
+    <br>
+    {{ form.escolaridade}}
+    <br>
+    {{ form.experiencia}}
+    <br>
+    <input type='hidden' value='{{form.vaga}}' name='vaga'>
+    <br>
+    <input type='submit' value='Cadastre-se' class="btn btn-outline-primary">  
+</form>
+{% endblock container %}

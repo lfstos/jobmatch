@@ -96,16 +96,16 @@ def test_criar_uma_vaga():
     }
 
     # Faz a requisição POST para a view
-    url = reverse('cadastrar_vagas')
+    url = reverse('cadastrar_vaga')
     response = client.post(url, payload)
 
     # Exibe a resposta para ver detalhes dos erros, se houver
     if response.status_code != 200:
         print(response.content.decode())  # Adiciona essa linha para imprimir detalhes dos erros
-    assert response.status_code == 200  # ou 302 se houver redirecionamento
+    assert response.status_code == 302  # ou 302 se houver redirecionamento
 
     # Verifica se a resposta foi bem-sucedida
-    assert response.status_code == 200
+    assert response.status_code == 302
 
     # Verifica se a vaga foi criada
     vaga = Vaga.objects.get(nome_vaga='Desenvolvedor Python')
@@ -141,7 +141,7 @@ def test_lista_com_uma_vaga():
     )
 
     # Fazendo uma requisição GET à view lista_vagas
-    response = client.get(reverse('lista_vagas'))
+    response = client.get(reverse('listar_vagas'))
     
     # Verificando se o status da resposta é 200 (OK)
     assert response.status_code == 200
@@ -167,7 +167,7 @@ def test_lista_com_cinco_vagas():
     Vaga.objects.create(nome_vaga = 'Engenheiro de Software', empresa=empresa)
 
     # Fazendo a reauisição GET à view lista_vagas
-    response = client.get(reverse('lista_vagas'))
+    response = client.get(reverse('listar_vagas'))
 
     # Verificando se o status da resposta é 200 (OK)
     assert response.status_code == 200
@@ -350,7 +350,7 @@ def test_criar_vaga_candidato_gera_excessao():
         'is_company': candidato.is_company
     }
     
-    url = reverse('cadastrar_vagas')
+    url = reverse('cadastrar_vaga')
 
     with pytest.raises(Exception, match='Apenas Empresa pode cadastrar vagas!'):
         response = client.post(url, payload)

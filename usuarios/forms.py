@@ -22,7 +22,6 @@ class CadastroForm(UserCreationForm):
     )
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}), label=''
-
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar Senha'}), label=''
