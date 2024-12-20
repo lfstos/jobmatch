@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastra Vaga</title>
-</head>
-<body>
-<h1>{{ form }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Cadastro de vagas{% endblock title %}
+
+
+    {% block h1 %}Cadastro vagas{% endblock h1 %}
+
+    {% block content %}
+        <form action='{% url "cadastrar_vaga" %}' method='post'>
+            {% csrf_token %}
+            {{ form.nome_vaga }}
+            <br>
+            {{ form.faixa_salarial }}
+            <br>
+            {{ form.escolaridade}}
+            <br>
+            {{ form.requisitos}}
+            <br>
+            {% comment %} <input type='hidden' value='{{request.user}}'> {% endcomment %}
+            <input type="submit" value='Cadastrar' class='btn btn-primary'>
+        </form>
+    {% endblock content %}

@@ -1,12 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from vagas.forms import VagaForm, CandidatoForm
 from vagas.models import Vaga, Candidato
 from usuarios.models import User
 
 
 def cadastrar_vagas(request):
+    print('cadastrar vaga')
     if request.method == 'POST':
+        print('post')
         if request.POST.get('is_company') == 'True':
             form = VagaForm(request.POST)
             if form.is_valid():
@@ -18,7 +20,7 @@ def cadastrar_vagas(request):
                     empresa=form.cleaned_data['empresa'],
                 )
                 vaga.save()
-                return HttpResponse('Vaga cadastrada com sucesso')
+                return redirect('lista_vagas')
             else:
                 return HttpResponse(f'Formulário inválido: {form.errors.as_json()}', status=400)
         else:
@@ -31,11 +33,13 @@ def cadastrar_vagas(request):
 
 def lista_vagas(request):
     vagas = Vaga.objects.all()
-    return render(request, 'vagas/lista_vagas.html', {'vagas': vagas})
+    quantidade_vagas = vagas.count()
+    return render(request, 'vagas/lista_vagas.html', {'vagas': vagas, 'quantidade_vagas': quantidade_vagas})
 
 
 def candidatar_vaga(request):
     if request.method == 'POST':
+        print(request.POST)
         form = CandidatoForm(request.POST)
         if form.is_valid():
             id = form.cleaned_data['email'].id # Obtendo o ID do usuário
@@ -50,7 +54,13 @@ def candidatar_vaga(request):
             candidato.vagas.set([vaga])
             candidato.save()
             return render(request, 'vagas/candidatar_vaga.html')
-        return HttpResponse('Falha ao cadandidatar')
+        else:
+            print(form.errors)
+            return HttpResponse(f'Formulário inválido: {form.errors.as_json()}', status=400)
+    # TODO: verificar erro ao tentar se cadastrar a vaga
+    elif request.method == 'GET':
+        form = CandidatoForm()
+        return render(request, 'vagas/candidatar_vaga.html', {'form': form})
 
 
 def editar_vaga(request):
@@ -81,5 +91,3 @@ def excluir_vaga(request):
             return render(request, 'vagas/lista_vagas.html')
         else:
             raise Exception('Apenas empresa pode excluir vaga!')
-        
-    

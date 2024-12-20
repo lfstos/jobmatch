@@ -102,10 +102,10 @@ def test_criar_uma_vaga():
     # Exibe a resposta para ver detalhes dos erros, se houver
     if response.status_code != 200:
         print(response.content.decode())  # Adiciona essa linha para imprimir detalhes dos erros
-    assert response.status_code == 200  # ou 302 se houver redirecionamento
+    assert response.status_code == 302  # ou 302 se houver redirecionamento
 
     # Verifica se a resposta foi bem-sucedida
-    assert response.status_code == 200
+    assert response.status_code == 302  
 
     # Verifica se a vaga foi criada
     vaga = Vaga.objects.get(nome_vaga='Desenvolvedor Python')

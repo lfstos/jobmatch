@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+{% extends "base.html" %}
 
-</head>
-<body>
-<h1>
-    {% for vaga in vagas %}
-        {{vaga.nome_vaga}}
-        {{ vaga.faixa_salarial }}
-        {{ vaga.escolaridade }}
-        {{ vaga.requisitos }}
-        {{ vaga.empresa }}
-    {% endfor %}
-</h1>
-</body>
-</html>
+{% block title %}Vagas{% endblock title %}
+
+
+{% block h1 %}Vagas{% endblock h1 %}
+
+{% block content %}
+    {% if quantidade_vagas == 0 %}
+        <h2>Nenhuma vaga disponível</h2>
+    {% endif %}
+    {{ vaga.nome_vaga}}
+    {{ vaga.faixa_salarial }}
+    {{ vaga.escolaridade }}
+    {{ vaga.requisitos }}
+    {{ vaga.empresa }}
+{% endblock content %}

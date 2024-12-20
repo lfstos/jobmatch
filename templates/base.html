@@ -26,6 +26,23 @@
         </div>
       </nav>
       <br>
-        {% block content %}{% endblock content %}
+        {% block card %}
+        
+        <div class="container">
+          <h1>{% block h1 %}{% endblock h1 %}</h1>
+          <hr>
+            <div class="row">
+              <div class="col"></div>
+              <div class="col">
+                {% block content %}{% endblock content %}
+              </div>
+              <div class="col"></div>
+            </div>
+          </div>
+    
+        
+        
+        {% endblock card %}
 </body>
 </html>
+
