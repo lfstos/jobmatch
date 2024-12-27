@@ -15,8 +15,8 @@
             {{ form.escolaridade}}
             <br>
             {{ form.requisitos}}
+            <input type='hidden' name='empresa' value='{{request.user.id}}'>
             <br>
-            {% comment %} <input type='hidden' value='{{request.user}}'> {% endcomment %}
             <input type="submit" value='Cadastrar' class='btn btn-primary'>
         </form>
     {% endblock content %}

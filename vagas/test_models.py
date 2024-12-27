@@ -1,12 +1,12 @@
 import pytest
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from django.test import Client
 from django.urls import reverse
 
 from usuarios.models import User
 from vagas.models import Vaga, Candidato
 
-User = get_user_model()
+# User = get_user_model()
 
 
 @pytest.mark.django_db
@@ -218,7 +218,7 @@ def test_candidatar_vaga():
     assert response.status_code == 200
 
     # candidato = Candidato.objects.get(email=usuario.email)
-    candidato = Candidato.objects.get(email=usuario)
+    Candidato.objects.get(email=usuario)
     # assert vaga.faixa_salarial == '1k-2k'
     # assert vaga.escolaridade == 'Tecnologo'
     # assert vaga.experiencia == 'Sou desenvolvedor web com especialidade Django'
@@ -333,6 +333,9 @@ def test_criar_vaga_candidato_gera_excessao():
     client = Client()
 
     candidato = User.objects.create_user(email='candidato@candidato.com', password='testpassword', is_company=False)
+
+    client.login(email='candidato@candidato.com', password='testpassword')
+
     vaga = Vaga.objects.create(
         nome_vaga='Desenvolvedor Web',
         faixa_salarial='1k-2k',
@@ -353,4 +356,4 @@ def test_criar_vaga_candidato_gera_excessao():
     url = reverse('cadastrar_vaga')
 
     with pytest.raises(Exception, match='Apenas Empresa pode cadastrar vagas!'):
-        response = client.post(url, payload)
+        client.post(url, payload)
