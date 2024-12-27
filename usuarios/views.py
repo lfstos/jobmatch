@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as logar
 
 from usuarios.forms import UsuarioForm, CadastroForm
 from usuarios.models import User
@@ -18,6 +18,7 @@ def login(request):
         password = request.POST.get('password')
         user = authenticate(email=email, password=password)
         if user is not None:
+            logar(request, user)
             return redirect('listar_vagas')
         else:
             messages.error(request, 'Usuário ou senha inválidos')

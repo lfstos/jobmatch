@@ -6,23 +6,23 @@ from usuarios.models import User
 
 
 def cadastrar_vagas(request):
-    print('cadastrar vaga')
     if request.method == 'POST':
-        print('post')
-        if request.POST.get('is_company') == 'True':
-            form = VagaForm(request.POST)
-            if form.is_valid():
-                vaga = Vaga.objects.create(
-                    nome_vaga=form.cleaned_data['nome_vaga'],
-                    faixa_salarial=form.cleaned_data['faixa_salarial'],
-                    escolaridade=form.cleaned_data['escolaridade'],
-                    requisitos=form.cleaned_data['requisitos'],
-                    empresa=form.cleaned_data['empresa'],
-                )
-                vaga.save()
-                return redirect('listar_vagas')
+        if request.user.is_company:
+            if request.user.id == int(request.POST.get('empresa')):
+                form = VagaForm(request.POST)
+                if form.is_valid():
+                    Vaga.objects.create(
+                        nome_vaga=form.cleaned_data['nome_vaga'],
+                        faixa_salarial=form.cleaned_data['faixa_salarial'],
+                        escolaridade=form.cleaned_data['escolaridade'],
+                        requisitos=form.cleaned_data['requisitos'],
+                        empresa=form.cleaned_data['empresa'],
+                    )
+                    return redirect('listar_vagas')
+                else:
+                    return HttpResponse(f'Formulário inválidos: {form.errors.as_json()}', status=400)
             else:
-                return HttpResponse(f'Formulário inválido: {form.errors.as_json()}', status=400)
+                return HttpResponse('Tentou burlar o sistema né espertinho', status=401)
         else:
             raise Exception('Apenas Empresa pode cadastrar vagas!')
     elif request.method == 'GET':

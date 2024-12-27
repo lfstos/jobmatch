@@ -2,23 +2,18 @@
 name = "jobmatch"
 version = "0.1.0"
 description = ""
-authors = ["Luiz Fernando <luiz-fernando@outlook.com>"]
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-django = "^5.1.3"
+python = "^3.10"
 
-[tool.ruff]
-line-length = 120
-
-[tool.ruff.lint]
-select = ["E501", "F401", "W291", "E251"]  # Seleciona as regras para verificar o comprimento da linha
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.3"
+django-extensions = "^3.2.3"
+ruff = "^0.8.4"
+pytest = "^8.3.4"
 pytest-django = "^4.9.0"
-ruff = "^0.8.1"
 
 [build-system]
 requires = ["poetry-core"]
