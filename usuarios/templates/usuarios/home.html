@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 
-{% block h1 %}Logar{% endblock h1 %}
-
 {% block content %}
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert {{ alert }}" role="alert">
-        {{ message }}
+  <div class="container">
+    <h1>Logar</h1>
+    <hr>
+      <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {{ alert }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form action='{% url "login" %}' method='post'>
+        <br>
+        {% csrf_token %}
+        {{ form.email }}
+        <br>
+        {{ form.password }}
+        <br>
+        <input type='submit' value='Entrar' class="btn btn-outline-primary">
+        </form>
+        <br>
+        Não tem conta? <a href="{% url "cadastro" %}">Cadastre-se</a>
       </div>
-  {% endfor %}
-  {% endif %}
-  <form action='{% url "login" %}' method='post'>
-    <br>
-    {% csrf_token %}
-    {{ form.email }}
-    <br>
-    {{ form.password }}
-    <br>
-    <input type='submit' value='Entrar' class="btn btn-outline-primary">
-  </form>
-  <br>
-  Não tem conta? <a href="{% url "cadastro" %}">Cadastre-se</a>
+      <div class="col"></div>
+    </div>
+  </div>
 {% endblock content %}

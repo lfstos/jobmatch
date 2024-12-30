@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Vagas{% endblock title %}
-
-
-{% block h1 %}Vagas{% endblock h1 %}
-
 {% block content %}
-    {% if quantidade_vagas == 0 %}
-        <h2>Nenhuma vaga disponível</h2>
-    {% endif %}
-    {{ vaga.nome_vaga}}
-    {{ vaga.faixa_salarial }}
-    {{ vaga.escolaridade }}
-    {{ vaga.requisitos }}
-    {{ vaga.empresa }}
+<div class="container">
+    <div class="row">
+        {% for vaga in vagas %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Vaga: {{ vaga.nome_vaga }}</h5>
+                        <p class="card-text">Faixa Salarial: {{ vaga.faixa_salarial }}</p>
+                        <p class="card-text">Empresa: {{ vaga.empresa }}  {{ vaga.pk }}</p>
+                        <a href="{% url 'saiba_mais' vaga.pk %}" class="card-link">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}

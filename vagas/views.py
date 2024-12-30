@@ -91,3 +91,10 @@ def excluir_vaga(request):
             return render(request, 'vagas/listar_vagas.html')
         else:
             raise Exception('Apenas empresa pode excluir vaga!')
+
+
+def saiba_mais(request, pk):
+    vaga = Vaga.objects.get(pk=pk)
+    form = VagaForm(instance=vaga)
+    # TODO: Corrigir a linha acima, instance=vaga, quando vai no saber mais de uma vaga da erro
+    return render(request, 'vagas/saiba_mais.html', {'vaga': vaga, 'form': form})
