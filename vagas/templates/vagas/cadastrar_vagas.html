@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Cadastro de vagas{% endblock title %}
+{% block title %}Cadastrar de vaga{% endblock title %}
 
-
-    {% block h1 %}Cadastro vagas{% endblock h1 %}
-
-    {% block content %}
+{% block content %}
+  <div class="container">
+    <h1>Cadastro vagas</h1>
+    <hr>
+      <div class="row">
+      <div class="col"></div>
+      <div class="col">
         <form action='{% url "cadastrar_vaga" %}' method='post'>
             {% csrf_token %}
             {{ form.nome_vaga }}
@@ -19,4 +22,8 @@
             <br>
             <input type="submit" value='Cadastrar' class='btn btn-primary'>
         </form>
-    {% endblock content %}
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+{% endblock content %}
